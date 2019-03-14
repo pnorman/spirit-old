@@ -1,0 +1,16 @@
+sources:
+  spirit:
+    type: MVT
+    url: http://localhost:8080/maps/spirit/{z}/{x}/{y}
+    max_zoom: 15
+scene:
+  background:
+    color: &land-color '#edf5e8'
+
+layers:
+  water:
+    data: { source: spirit }
+    draw:
+      polygons:
+        order: 300
+        color: &water-color '#bdd7e7'
