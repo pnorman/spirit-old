@@ -90,6 +90,21 @@
   """
 
 [[providers.layers]]
+  name = "parks"
+  geometry_fieldname = "way"
+  geometry_type = "Polygon"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
+      osm_id,
+      leisure
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND leisure = 'nature_reserve'
+      AND way_area > pixel_area(!ZOOM!)*0.25
+  """
+
+[[providers.layers]]
   name = "ne_boundaries"
   geometry_fieldname = "way"
   geometry_type = "LineString"
@@ -246,6 +261,13 @@
   provider_layer = "osm2pgsql.landcover"
   min_zoom = 6
   dont_simplify = true
+
+[[maps.layers]]
+  name = "parks"
+  provider_layer = "osm2pgsql.parks"
+  min_zoom = 6
+  dont_simplify = true
+
 
 [[maps.layers]]
   name = "boundaries"

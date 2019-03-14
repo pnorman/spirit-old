@@ -8,8 +8,11 @@ scene:
     color: &land-color '#edf5e8'
 
 styles:
-  boundary:
+  overlay-lines:
     base: lines
+    blend: translucent
+  overlay-polygons:
+    base: polygons
     blend: translucent
 
 layers:
@@ -89,13 +92,28 @@ layers:
       polygons:
         order: 300
         color: 'red'
+
+  parks:
+    data: { source: spirit }
+    filter:
+      leisure: nature_reserve
+    draw:
+      overlay-lines:
+        order: 480
+        color: rgba(120,186,125,0.3)
+        width: [[6, 0.4px], [10, 1px], [12, 2px]]
+        dash: [2, 2]
+      overlay-polygons:
+        order: 480
+        color: rgba(120,186,125,0.1)
+
   boundaries:
     data: { source: spirit }
     a2:
       filter:
         admin_level: [0, 1, 2]
       draw:
-        boundary:
+        overlay-lines:
           order: 510
           color: &boundary-color purple
           width: [[4, 0.3px], [8, 1px]]
@@ -104,7 +122,7 @@ layers:
         admin_level: [3, 4]
         $zoom: { min: 4 }
       draw:
-        boundary:
+        overlay-lines:
           order: 508
           color: [0.5,0,0.5, 0.5]
           width: [[4, 0.5px], [8, 1.5px]]
