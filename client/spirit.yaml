@@ -19,6 +19,76 @@ layers:
       polygons:
         order: 300
         color: &water-color '#bdd7e7'
+  landcover:
+    data: { source: spirit }
+    industrial:
+      filter:
+        landuse: industrial
+      draw:
+        polygons:
+          order: 400
+          color: '#E9E4D5'
+    residential:
+      filter:
+        landuse: residential
+      draw:
+        polygons:
+          order: 400
+          color: '#F5F0E0'
+    trees:
+      filter:
+        - landuse: forest
+        - natural: wood
+      draw:
+        polygons:
+          order: 450
+          color: '#CCE5CE' # [zoom<=14] { polygon-fill:lighten(@landuse_green2,10%); }
+    pitch:
+      filter:
+        leisure: pitch
+      draw:
+        polygons:
+          order: 420
+          color: '#CCE5CE' # [zoom<=14] { polygon-fill:lighten(@landuse_green2,10%); } }
+    grass:
+      filter:
+        landuse: grass
+      draw:
+        polygons:
+          order: 430
+          color: '#BBDBB2'
+    common:
+      filter:
+        leisure: common
+      draw:
+        polygons:
+          order: 410
+          color: '#BBDBB2'
+    park:
+      filter:
+        leisure: park
+      draw:
+        polygons:
+          order: 410
+          color: '#BBDBB2'
+    golf_course:
+      filter:
+        leisure: golf_course
+      draw:
+        polygons:
+          order: 410
+          color: '#BBDBB2'
+    golf_course:
+      filter:
+        leisure: golf_course
+      draw:
+        polygons:
+          order: 410
+          color: '#BBDBB2'
+    draw:
+      polygons:
+        order: 300
+        color: 'red'
   boundaries:
     data: { source: spirit }
     a2:
@@ -26,7 +96,7 @@ layers:
         admin_level: [0, 1, 2]
       draw:
         boundary:
-          order: 410
+          order: 510
           color: &boundary-color purple
           width: [[4, 0.3px], [8, 1px]]
     a4:
@@ -35,7 +105,7 @@ layers:
         $zoom: { min: 4 }
       draw:
         boundary:
-          order: 408
+          order: 508
           color: [0.5,0,0.5, 0.5]
           width: [[4, 0.5px], [8, 1.5px]]
           dash: [1.5, 3.5]
