@@ -10,3 +10,82 @@
   database = "gis"        # postgis database name
   user = ""
   password = ""
+
+[[providers.layers]]
+  name = "ne_water"
+  geometry_fieldname = "way"
+  geometry_type = "Polygon"
+  sql = """
+  SELECT
+      ST_AsBinary(way) AS way
+  FROM ne_ocean
+  WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      ST_AsBinary(way) AS way
+  FROM ne_lake
+  WHERE way && !BBOX!
+  """
+
+[[providers.layers]]
+  name = "lz_water"
+  geometry_fieldname = "way"
+  geometry_type = "Polygon"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
+      NULL as osm_id
+    FROM simplified_ocean_polygons
+    WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (waterway = 'riverbank'
+        OR landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND way_area > pixel_area(!ZOOM!)*0.25
+  """
+[[providers.layers]]
+  name = "water"
+  geometry_fieldname = "way"
+  geometry_type = "Polygon"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
+      NULL AS osm_id
+    FROM ocean_polygons
+    WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (waterway = 'riverbank'
+        OR landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND way_area > pixel_area(!ZOOM!)*0.25
+  """
+
+[[maps]]
+  name = "spirit"
+
+[[maps.layers]]
+  name = "water"
+  provider_layer = "osm2pgsql.ne_water"
+  min_zoom = 0
+  max_zoom = 5
+[[maps.layers]]
+  name = "water"
+  provider_layer = "osm2pgsql.lz_water"
+  min_zoom = 6
+  max_zoom = 9
+  dont_simplify = true
+[[maps.layers]]
+  name = "water"
+  provider_layer = "osm2pgsql.water"
+  min_zoom = 10
+  dont_simplify = true
