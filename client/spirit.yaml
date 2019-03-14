@@ -7,6 +7,11 @@ scene:
   background:
     color: &land-color '#edf5e8'
 
+styles:
+  boundary:
+    base: lines
+    blend: translucent
+
 layers:
   water:
     data: { source: spirit }
@@ -14,3 +19,23 @@ layers:
       polygons:
         order: 300
         color: &water-color '#bdd7e7'
+  boundaries:
+    data: { source: spirit }
+    a2:
+      filter:
+        admin_level: [0, 1, 2]
+      draw:
+        boundary:
+          order: 410
+          color: &boundary-color purple
+          width: [[4, 0.3px], [8, 1px]]
+    a4:
+      filter:
+        admin_level: [3, 4]
+        $zoom: { min: 4 }
+      draw:
+        boundary:
+          order: 408
+          color: [0.5,0,0.5, 0.5]
+          width: [[4, 0.5px], [8, 1.5px]]
+          dash: [1.5, 3.5]

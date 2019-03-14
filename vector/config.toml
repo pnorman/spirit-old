@@ -70,6 +70,138 @@
       AND way_area > pixel_area(!ZOOM!)*0.25
   """
 
+[[providers.layers]]
+  name = "ne_boundaries"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
+      2 AS admin_level
+    FROM ne_populated_places
+    WHERE way && !BBOX!
+  """
+
+[[providers.layers]]
+  name = "lz_boundaries"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  # The SQL for boundaries is fairly complex because it deduplicates overlapping
+  # lines, To do this, the boundary linestrings need to be turned into two-point
+  # segments, distinct segments found, and then the result rebuilt into longer
+  # linestrings. Tegola #559 prevents the use of CTEs, so this needs to be done
+  # with nested subselects which are messier.
+  # References:
+  # - http://blog.cleverelephant.ca/2015/02/breaking-linestring-into-segments.html
+  sql = """
+  SELECT
+      ST_AsBinary(ST_RemoveRepeatedPoints(
+        (ST_Dump(ST_LineMerge(ST_Collect(way)))).geom,
+        pixel_size(!ZOOM!)*0.25)) AS way,
+      admin_level,
+      osm_id
+    FROM
+    (SELECT
+        DISTINCT ON (way) -- Select only one of the overlapping geoms
+        way,
+        admin_level,
+        osm_id
+      FROM
+      (SELECT
+          ST_MakeLine(
+            lag((pt).geom) OVER (PARTITION BY ctid ORDER BY ctid, (pt).path),
+            (pt).geom) AS way, -- This makes a line between the previous point and the next one
+          admin_level,
+          osm_id
+        FROM
+        (SELECT
+            ctid,
+            ST_DumpPoints(way) AS pt,
+            admin_level,
+            osm_id
+          FROM
+          (SELECT -- The innermost select just gets the admin boundaries
+              ctid, -- ctid is kept around as a unique id because osm_id is not unique with long line splitting
+              way,
+              admin_level::integer,
+              osm_id
+            FROM planet_osm_roads
+            WHERE way && !BBOX!
+              AND boundary = 'administrative'
+              AND admin_level IN ('0', '1', '2', '3', '4')
+              AND osm_id < 0
+          ) boundaries
+        ) AS dumps
+      ) AS segments
+      WHERE way IS NOT NULL
+      ORDER BY
+        way,
+        admin_level,
+        osm_id
+    ) AS deduplicated_segments
+    GROUP BY
+      osm_id,
+      admin_level
+  """
+
+[[providers.layers]]
+  name = "boundaries"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  # This query is the same as the lz_boundaries layer, except it selects from
+  # planet_osm_line and different admin_levels
+  sql = """
+  SELECT
+      ST_AsBinary(ST_RemoveRepeatedPoints(
+        (ST_Dump(ST_LineMerge(ST_Collect(way)))).geom,
+        pixel_size(!ZOOM!)*0.25)) AS way,
+      admin_level,
+      osm_id
+    FROM
+    (SELECT
+        DISTINCT ON (way) -- Select only one of the overlapping geoms
+        way,
+        admin_level,
+        osm_id
+      FROM
+      (SELECT
+          ST_MakeLine(
+            lag((pt).geom) OVER (PARTITION BY ctid ORDER BY ctid, (pt).path),
+            (pt).geom) AS way, -- This makes a line between the previous point and the next one
+          admin_level,
+          osm_id
+        FROM
+        (SELECT
+            ctid,
+            ST_DumpPoints(way) AS pt,
+            admin_level,
+            osm_id
+          FROM
+          (SELECT -- The innermost select just gets the admin boundaries
+              ctid, -- ctid is kept around as a unique id because osm_id is not unique with long line splitting
+              way,
+              admin_level::integer,
+              osm_id
+            FROM planet_osm_line
+            WHERE way && !BBOX!
+              AND boundary = 'administrative'
+              AND (admin_level IN ('0', '1', '2', '3', '4', '5', '6')
+                OR admin_level IN ('7', '8') AND !ZOOM! >= 10)
+              AND osm_id < 0
+          ) boundaries
+        ) AS dumps
+      ) AS segments
+      WHERE way IS NOT NULL
+      ORDER BY
+        way,
+        admin_level,
+        osm_id
+    ) AS deduplicated_segments
+    GROUP BY
+      osm_id,
+      admin_level
+  """
+
 [[maps]]
   name = "spirit"
 
@@ -88,4 +220,22 @@
   name = "water"
   provider_layer = "osm2pgsql.water"
   min_zoom = 10
+  dont_simplify = true
+[[maps.layers]]
+  name = "boundaries"
+  provider_layer = "osm2pgsql.ne_boundaries"
+  min_zoom = 0
+  max_zoom = 3
+  dont_simplify = true
+[[maps.layers]]
+  name = "boundaries"
+  provider_layer = "osm2pgsql.lz_boundaries"
+  min_zoom = 4
+  max_zoom = 7
+  dont_simplify = true
+[[maps.layers]]
+  name = "boundaries"
+  provider_layer = "osm2pgsql.boundaries"
+  min_zoom = 8
+  max_zoom = 15
   dont_simplify = true
