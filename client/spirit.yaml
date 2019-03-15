@@ -14,7 +14,30 @@ styles:
   overlay-polygons:
     base: polygons
     blend: translucent
-
+  labels:
+    base: text
+    draw:
+      priority: 900
+      text_wrap: 7
+      font:
+        family: Noto Sans
+        size: 14px
+        fill: 'black'
+        stroke:
+          color: 'white'
+          width: 1.75px
+  linelabels:
+    base: text
+    draw:
+      priority: 900
+      text_wrap: false
+      font:
+        family: Noto Sans
+        size: 14px
+        fill: 'black'
+        stroke:
+          color: 'white'
+          width: 1.75px
 layers:
   water:
     data: { source: spirit }
@@ -48,6 +71,28 @@ layers:
           order: 310
           color: *water-color
           width: [[15, 0.1px], [16, 0.3px], [17, 0.5px], [18, 0.7px], [19, 1px], [20, 1.5px]]
+    waterway_names:
+      draw:
+        linelabels:
+          order: 700
+          priority: 100
+          font:
+            fill: '#0868AD'
+            stroke:
+              color: '#EFF2FB'
+
+  water_names:
+    data: { source: spirit }
+    draw:
+      labels:
+        order: 700
+        priority: 100
+        font:
+          fill: '#0868AD'
+          stroke:
+            color: '#EFF2FB'
+
+
   landcover:
     data: { source: spirit }
     industrial:

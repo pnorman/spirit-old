@@ -71,13 +71,34 @@
   """
 
 [[providers.layers]]
+  name = "water_names"
+  geometry_fieldname = "way"
+  geometry_type = "Point"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_PointOnSurface(way)) AS way,
+      osm_id,
+      name,
+      way_area AS area
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND name IS NOT NULL
+      AND (landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND NOT water = 'river'
+      AND way_area > pixel_area(!ZOOM!)*32*32
+    ORDER BY way_area DESC
+  """
+
+[[providers.layers]]
   name = "waterways"
   geometry_fieldname = "way"
   geometry_type = "LineString"
   sql = """
   SELECT
       ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
-      waterway
+      waterway,
+      name
     FROM planet_osm_line
     WHERE way && !BBOX!
       AND (waterway = 'river'
@@ -284,6 +305,12 @@
   name = "water"
   provider_layer = "osm2pgsql.water"
   min_zoom = 10
+  dont_simplify = true
+
+[[maps.layers]]
+  name = "water_names"
+  provider_layer = "osm2pgsql.water_names"
+  min_zoom = 6
   dont_simplify = true
 
 [[maps.layers]]
