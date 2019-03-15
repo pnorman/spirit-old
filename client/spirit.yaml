@@ -127,3 +127,14 @@ layers:
           color: [0.5,0,0.5, 0.5]
           width: [[4, 0.5px], [8, 1.5px]]
           dash: [1.5, 3.5]
+
+  buildings:
+    data: { source: spirit }
+    draw:
+      polygons:
+        order: 600
+        color: '#EDEBDD'
+      lines:
+        order: 601
+        color: '#EEE7BA'
+        width: 0.2px

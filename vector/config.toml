@@ -236,6 +236,21 @@
       admin_level
   """
 
+[[providers.layers]]
+  name = "buildings"
+  geometry_fieldname = "way"
+  geometry_type = "Polygon"
+  sql = """
+  SELECT
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND building IS NOT NULL
+      AND building != 'no'
+      AND way_area > pixel_area(!ZOOM!)*0.25
+"""
+
 [[maps]]
   name = "spirit"
 
@@ -285,4 +300,10 @@
   name = "boundaries"
   provider_layer = "osm2pgsql.boundaries"
   min_zoom = 8
+  dont_simplify = true
+
+[[maps.layers]]
+  name = "buildings"
+  provider_layer = "osm2pgsql.buildings"
+  min_zoom = 12
   dont_simplify = true
