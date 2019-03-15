@@ -285,5 +285,4 @@
   name = "boundaries"
   provider_layer = "osm2pgsql.boundaries"
   min_zoom = 8
-  max_zoom = 15
   dont_simplify = true
