@@ -71,6 +71,21 @@
   """
 
 [[providers.layers]]
+  name = "waterways"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  sql = """
+  SELECT
+      ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
+      waterway
+    FROM planet_osm_line
+    WHERE way && !BBOX!
+      AND (waterway = 'river'
+        OR waterway IN ('canal', 'stream') AND !ZOOM! >= 12
+        OR waterway IN ('drain', 'ditch', 'wadi') AND !ZOOM! >= 14)
+  """
+
+[[providers.layers]]
   name = "landcover"
   geometry_fieldname = "way"
   geometry_type = "Polygon"
@@ -269,6 +284,12 @@
   name = "water"
   provider_layer = "osm2pgsql.water"
   min_zoom = 10
+  dont_simplify = true
+
+[[maps.layers]]
+  name = "waterways"
+  provider_layer = "osm2pgsql.waterways"
+  min_zoom = 8
   dont_simplify = true
 
 [[maps.layers]]

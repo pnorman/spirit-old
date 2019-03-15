@@ -22,6 +22,32 @@ layers:
       polygons:
         order: 300
         color: &water-color '#bdd7e7'
+  waterways:
+    data: { source: spirit }
+    rivers:
+      filter:
+        waterway: river
+      draw:
+        lines:
+          order: 310
+          color: *water-color
+          width: [[8, 0.1px], [9, 0.2px], [10, 0.4px], [11, 0.6px], [12, 0.8px], [13, 1px], [14, 1.5px], [15, 2px], [16, 3px], [17, 4px], [18, 5px], [19, 6px], [20, 7px]]
+    streams:
+      filter:
+        waterway: stream
+      draw:
+        lines:
+          order: 310
+          color: *water-color
+          width: [[12, 0px], [13, 0.2px], [14, 0.4px], [15, 0.6px], [16, 0.8px], [17, 1px], [18, 1.5px], [19, 2px]]
+    small-waterway:
+      filter:
+        waterway: [ditch, drain]
+      draw:
+        lines:
+          order: 310
+          color: *water-color
+          width: [[15, 0.1px], [16, 0.3px], [17, 0.5px], [18, 0.7px], [19, 1px], [20, 1.5px]]
   landcover:
     data: { source: spirit }
     industrial:
