@@ -254,9 +254,9 @@ layers:
           link: [true]
         draw:
           lines:
-            width: &minor-width [[12, 0.8px], [14, 2px], [16, 4px], [18, 14px]]
+            width: &minor-width [[12, 0px], [14, 2px], [16, 4px], [18, 14px]]
             outline:
-              width: &minor-outline-width [[12, 0px], [14, 1px], [16, 1px], [18, 1.75px]]
+              width: &minor-outline-width [[12, 0.8px], [14, 1px], [16, 1px], [18, 1.75px]]
       bridge:
         filter:
           bridge: [true]
