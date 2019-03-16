@@ -353,7 +353,7 @@ layers:
         draw:
           lines:
             outline:
-              color: '#ffffff'
+              color: '#c9c390'
       tunnel:
         filter:
           tunnel: [true]
