@@ -209,3 +209,117 @@ layers:
         order: 601
         color: '#EEE7BA'
         width: 0.2px
+
+  # transport order occupies 1000 to 2000, and emulates ordering by layer, link, then class
+  # We start with a "base" of 1500, which is then adjusted by 100 per layer. Another 50 is
+  # added for non-links, and z_order (0-44) is added last
+  transport:
+    data: { source: spirit }
+    # Set up repeated settings for all roads
+    _base:
+      draw:
+        lines:
+          order: &road-order function() { return 1500 + feature.layer * 100 + feature.z_order + 50; }
+          cap: round
+          outline:
+            order: &road-link-order function() { return 1500 + feature.layer * 100 + feature.z_order ; }
+            cap: butt
+    _link:
+      filter:
+        link: [true]
+      draw:
+        lines:
+          order: *road-link-order
+
+    motorway:
+      filter:
+        highway: motorway
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#F28B41'
+          width: &motor-width [[12, 2.5px], [14, 4px], [16, 8px], [18, 20px]]
+          outline:
+            color: '#da7d3b'
+            width: &motor-outline-width [[12, 0.5px], [14, 1px], [16, 1.25px], [18, 2px]]
+      motorway_link:
+        filter:
+          link: [true]
+        draw:
+          lines:
+            width: &minor-width [[12, 0.8px], [14, 2px], [16, 4px], [18, 14px]]
+            outline:
+              width: &minor-outline-width [[12, 0px], [14, 1px], [16, 1px], [18, 1.75px]]
+    trunk:
+      filter:
+        highway: trunk
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#FECC5D'
+          width: *motor-width
+          outline:
+            color: '#e5b854'
+            width: *motor-outline-width
+      trunk_link:
+        filter:
+          link: [true]
+        draw:
+          lines:
+            width: *minor-width
+    primary:
+      filter:
+        highway: primary
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#FECC5D'
+          width: &mainroad-width [[12, 1.2px], [14, 3px], [16, 6px], [18, 17px]]
+          outline:
+            color: '#e5b854'
+            width: &mainroad-outline-width [[12, 0.5px], [14, 1px], [16, 1.25px], [18, 2px]]
+      primary_link:
+        filter:
+          link: [true]
+        draw:
+          lines:
+            width: *minor-width
+    secondary:
+      filter:
+        highway: secondary
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#FBF4B4'
+          width: *mainroad-width
+          outline:
+            color: '#e2dca2'
+            width: *mainroad-outline-width
+      secondary_link:
+        filter:
+          link: [true]
+        draw:
+          lines:
+            width: *minor-width
+    tertiary:
+      filter:
+        highway: tertiary
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#FFFFFF'
+          width: *minor-width
+          outline:
+            color: '#c5cbc1'
+            width: *minor-outline-width
+    residential:
+      filter:
+        highway: [unclassified, residential]
+        $zoom: { min: 4 }
+      draw:
+        lines:
+          color: '#FFFFFF'
+          width: *minor-width
+          outline:
+            color: '#c5cbc1'
+            width: *minor-outline-width

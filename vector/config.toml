@@ -285,7 +285,32 @@
       AND building IS NOT NULL
       AND building != 'no'
       AND way_area > pixel_area(!ZOOM!)*0.25
-"""
+  """
+
+[[providers.layers]]
+  name = "transport"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  sql = """
+  SELECT
+      ST_AsBinary(way) AS way,
+      osm_id,
+      CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS highway, -- strip link,
+      railway,
+      name,
+      ref,
+      substr(highway, length(highway)-4, 5) = '_link' AS link,
+      LEAST(GREATEST(COALESCE(layer, 0), -5), 5) AS layer, -- cap layer to within +/- 5
+      (z_order/10)::integer + CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN 14 ELSE 0 END AS z_order
+      -- Take z_order, scale it, then make links match z_order of non-link type
+    FROM planet_osm_line
+    WHERE way && !BBOX!
+      AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                       'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
+        OR highway IN ('service') AND !ZOOM! >= 13
+        OR railway IN ('rail', 'narrow_gague', 'funicular'))
+    ORDER BY LEAST(GREATEST(COALESCE(layer, 0), -5), 5) DESC, z_order DESC
+  """
 
 [[maps]]
   name = "spirit"
@@ -353,5 +378,11 @@
 [[maps.layers]]
   name = "buildings"
   provider_layer = "osm2pgsql.buildings"
+  min_zoom = 12
+  dont_simplify = true
+
+[[maps.layers]]
+  name = "transport"
+  provider_layer = "osm2pgsql.transport"
   min_zoom = 12
   dont_simplify = true
