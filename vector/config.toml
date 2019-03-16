@@ -308,8 +308,10 @@
     FROM planet_osm_line
     WHERE way && !BBOX!
       AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                       'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
-        OR highway IN ('service') AND !ZOOM! >= 13
+                       'secondary', 'secondary_link')
+        OR highway IN ('tertiary', 'tertiary_link') AND !ZOOM! >= 11
+        OR highway IN ('unclassified', 'residential') AND !ZOOM! >= 12
+        OR highway IN ('service') AND !ZOOM! >= 14
         OR railway IN ('rail', 'narrow_gague', 'funicular'))
     ORDER BY LEAST(GREATEST(COALESCE(layer, 0), -5), 5) DESC, z_order DESC
   """
@@ -380,11 +382,11 @@
 [[maps.layers]]
   name = "buildings"
   provider_layer = "osm2pgsql.buildings"
-  min_zoom = 12
+  min_zoom = 13
   dont_simplify = true
 
 [[maps.layers]]
   name = "transport"
   provider_layer = "osm2pgsql.transport"
-  min_zoom = 12
+  min_zoom = 10
   dont_simplify = true
