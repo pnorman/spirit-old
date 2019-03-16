@@ -230,6 +230,13 @@ layers:
       draw:
         lines:
           order: *road-link-order
+    _tunnel:
+      filter:
+        tunnel: [true]
+      draw:
+        lines:
+          outline:
+            dash: [0.25]
 
     motorway:
       filter:
@@ -250,6 +257,19 @@ layers:
             width: &minor-width [[12, 0.8px], [14, 2px], [16, 4px], [18, 14px]]
             outline:
               width: &minor-outline-width [[12, 0px], [14, 1px], [16, 1px], [18, 1.75px]]
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#ae642f'
+      tunnel:
+        filter:
+          tunnel: [true]
+        draw:
+          lines:
+            color: '#f5a871'
     trunk:
       filter:
         highway: trunk
@@ -267,6 +287,19 @@ layers:
         draw:
           lines:
             width: *minor-width
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#b79343'
+      tunnel:
+        filter:
+          tunnel: [true]
+        draw:
+          lines:
+            color: '#fedc90'
     primary:
       filter:
         highway: primary
@@ -284,6 +317,19 @@ layers:
         draw:
           lines:
             width: *minor-width
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#b79343'
+      tunnel:
+        filter:
+          tunnel: [true]
+        draw:
+          lines:
+            color: '#fedc90'
     secondary:
       filter:
         highway: secondary
@@ -301,6 +347,19 @@ layers:
         draw:
           lines:
             width: *minor-width
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#ffffff'
+      tunnel:
+        filter:
+          tunnel: [true]
+        draw:
+          lines:
+            color: '#fefbe4'
     tertiary:
       filter:
         highway: tertiary
@@ -312,6 +371,13 @@ layers:
           outline:
             color: '#c5cbc1'
             width: *minor-outline-width
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#9ea29a'
     residential:
       filter:
         highway: [unclassified, residential]
@@ -323,3 +389,10 @@ layers:
           outline:
             color: '#c5cbc1'
             width: *minor-outline-width
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            outline:
+              color: '#9ea29a'
