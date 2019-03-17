@@ -377,7 +377,7 @@
 [[maps.layers]]
   name = "landcover"
   provider_layer = "osm2pgsql.landcover"
-  min_zoom = 6
+  min_zoom = 7
   dont_simplify = true
 
 [[maps.layers]]
@@ -413,8 +413,8 @@
 
 [[maps.layers]]
   name = "transport"
-  provider_layer = "osm2pgsql.transport"
-  min_zoom = 8
+  provider_layer = "osm2pgsql.mid_transport"
+  min_zoom = 5
   max_zoom = 10
   dont_simplify = true
 [[maps.layers]]

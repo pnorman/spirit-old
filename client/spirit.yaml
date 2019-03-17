@@ -266,10 +266,10 @@ layers:
       draw:
         lines:
           color: '#F28B41'
-          width: &motor-width [[11, 2px], [12, 2.5px], [14, 4px], [16, 8px], [18, 20px]]
+          width: &motor-width [[6, 0.5], [8, 1px], [10, 1.8px], [11, 1.5px], [12, 2.1px], [14, 4px], [16, 8.5px], [18, 17px], [20, 35px]]
           outline:
             color: '#da7d3b'
-            width: &motor-outline-width [[[11, 1px], 12, 0.5px], [14, 1px], [16, 1.25px], [18, 2px]]
+            width: &motor-outline-width [[10, 0px], [11, 0.5px], [12, 0.5px], [14, 0.8px], [16, 1.2px], [18, 1.7px], [20, 2.1px]]
       link:
         filter:
           link: [true]
@@ -298,7 +298,7 @@ layers:
       draw:
         lines:
           color: '#FECC5D'
-          width: *motor-width
+          width: [[6, 0.25px], [8, 0.5px], [10, 1.8px], [11, 1.5px], [12, 2.1px], [14, 4px], [16, 8.5px], [18, 17px], [20, 35px]]
           outline:
             color: '#e5b854'
             width: *motor-outline-width
@@ -324,7 +324,7 @@ layers:
     primary:
       filter:
         highway: primary
-        $zoom: { min: 4 }
+        $zoom: { min: 9 }
       draw:
         lines:
           color: '#FECC5D'
@@ -354,7 +354,7 @@ layers:
     secondary:
       filter:
         highway: secondary
-        $zoom: { min: 4 }
+        $zoom: { min: 10 }
       draw:
         lines:
           color: '#FBF4B4'
@@ -384,7 +384,7 @@ layers:
     tertiary:
       filter:
         highway: tertiary
-        $zoom: { min: 4 }
+        $zoom: { min: 11 }
       draw:
         lines:
           color: '#FFFFFF'
@@ -402,7 +402,7 @@ layers:
     residential:
       filter:
         highway: [unclassified, residential]
-        $zoom: { min: 4 }
+        $zoom: { min: 12 }
       draw:
         lines:
           color: '#FFFFFF'
