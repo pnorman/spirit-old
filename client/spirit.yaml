@@ -259,10 +259,59 @@ layers:
           outline:
             dash: [0.25]
 
+    rail:
+      filter:
+        railway: rail
+      draw:
+        lines:
+          color: '#999999'
+          width: [[12, 0.7px], [14, 1.5px], [16, 4px], [18, 6px], [20, 9px]]
+          dash: [1.4, 2.8]
+      # stops can't be done with dash, so they are emulated with filters to be a [1px, 2px] dash
+      z14:
+        filter:
+          $zoom: { min: 14 }
+        draw:
+          lines:
+            dash: [.66, 1.33]
+      z15:
+        filter:
+          $zoom: { min: 15 }
+        draw:
+          lines:
+            dash: [.36, .73]
+      z16:
+        filter:
+          $zoom: { min: 16 }
+        draw:
+          lines:
+            dash: [.25, .5]
+      z18:
+        filter:
+          $zoom: { min: 18 }
+        draw:
+          lines:
+            dash: [.17, .33]
+      z20:
+        filter:
+          $zoom: { min: 20 }
+        draw:
+          lines:
+            dash: [.11, .22]
+      bridge:
+        filter:
+          bridge: [true]
+        draw:
+          lines:
+            dash_background_color: *land-color
+            outline:
+              color: '#333333'
+              width: [[16, 0.5px], [18, 0.7px], [20, 1px]]
+              dash: null
     motorway:
       filter:
         highway: motorway
-        $zoom: { min: 4 }
+        $zoom: { min: 5 }
       draw:
         lines:
           color: '#F28B41'
@@ -294,7 +343,7 @@ layers:
     trunk:
       filter:
         highway: trunk
-        $zoom: { min: 4 }
+        $zoom: { min: 5 }
       draw:
         lines:
           color: '#FECC5D'

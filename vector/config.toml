@@ -307,8 +307,9 @@
       tunnel IS NOT NULL AND tunnel != 'no' AS tunnel
     FROM planet_osm_roads
     WHERE way && !BBOX!
-      AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                       'secondary', 'secondary_link')
+      AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link')
+        OR highway IN ('primary', 'primary_link') AND !ZOOM! >= 9
+        OR highway IN ('secondary', 'secondary_link') AND !ZOOM! >= 10
         OR railway IN ('rail', 'narrow_gague', 'funicular'))
     ORDER BY LEAST(GREATEST(COALESCE(layer, 0), -5), 5) DESC, z_order DESC
   """
