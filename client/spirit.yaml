@@ -8,12 +8,6 @@ scene:
     color: &land-color '#edf5e8'
 
 styles:
-  overlay-lines:
-    base: lines
-    blend: translucent
-  overlay-polygons:
-    base: polygons
-    blend: translucent
   labels:
     base: text
     draw:
@@ -169,12 +163,12 @@ layers:
     filter:
       leisure: nature_reserve
     draw:
-      overlay-lines:
+      translucent_lines:
         order: 480
         color: rgba(120,186,125,0.3)
         width: [[6, 0.4px], [10, 1px], [12, 2px]]
         dash: [2, 2]
-      overlay-polygons:
+      translucent_polygons:
         order: 480
         color: rgba(120,186,125,0.1)
 
@@ -184,7 +178,7 @@ layers:
       filter:
         admin_level: [0, 1, 2]
       draw:
-        overlay-lines:
+        translucent_lines:
           order: 510
           color: &boundary-color purple
           width: [[4, 0.3px], [8, 1px]]
@@ -193,7 +187,7 @@ layers:
         admin_level: [3, 4]
         $zoom: { min: 4 }
       draw:
-        overlay-lines:
+        translucent_lines:
           order: 508
           color: [0.5,0,0.5, 0.5]
           width: [[4, 0.5px], [8, 1.5px]]
