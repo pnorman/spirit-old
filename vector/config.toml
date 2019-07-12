@@ -343,6 +343,22 @@
     ORDER BY LEAST(GREATEST(COALESCE(layer, 0), -5), 5) DESC, z_order DESC
   """
 
+[[providers.layers]]
+  name = "road_refs"
+  geometry_fieldname = "way"
+  geometry_type = "LineString"
+  sql = """
+SELECT
+    ST_AsBinary(way) AS way,
+    osm_id,
+    ref
+  FROM planet_osm_line
+  WHERE way && !BBOX!
+    AND (highway IN ('motorway', 'trunk', 'primary', 'secondary')
+      OR highway IN ('tertiary') AND !ZOOM! >= 11)
+    AND ref IS NOT NULL
+  """
+
 [[maps]]
   name = "spirit"
 
@@ -422,4 +438,10 @@
   name = "transport"
   provider_layer = "osm2pgsql.transport"
   min_zoom = 11
+  dont_simplify = true
+
+[[maps.layers]]
+  name = "road_refs"
+  provider_layer = "osm2pgsql.road_refs"
+  min_zoom = 8
   dont_simplify = true

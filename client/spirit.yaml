@@ -20,6 +20,18 @@ styles:
         stroke:
           color: 'white'
           width: 1.75px
+  shields:
+    base: points
+    text:
+      text_source: ref
+      text_wrap: false
+      font:
+        family: Noto Sans
+        size: 14px
+        fill: 'black'
+        stroke:
+          color: 'white'
+          width: 1.75px
   linelabels:
     base: text
     draw:
@@ -313,6 +325,25 @@ layers:
           outline:
             color: '#da7d3b'
             width: &motor-outline-width [[10, 0px], [11, 0.5px], [12, 0.5px], [14, 0.8px], [16, 1.2px], [18, 1.7px], [20, 2.1px]]
+      shields:
+        filter:
+          ref: true
+        draw:
+          points:
+            priority: 5
+            texture: test.svg
+            size: 32px
+            placement: spaced
+            placement_min_length_ratio: 0.1
+            text:
+              text_source: ref
+              collide: false
+              optional: false
+              anchor: center
+              font:
+                family: Noto Sans
+                size: 12px
+                fill: 'black'
       link:
         filter:
           link: [true]
