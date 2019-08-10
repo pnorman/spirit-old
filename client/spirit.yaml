@@ -331,8 +331,8 @@ layers:
         draw:
           points:
             priority: 5
-            texture: test.svg
-            size: 32px
+            texture: symbols/shield2.svg
+            size: [ 24px, 18px]
             placement: spaced
             placement_min_length_ratio: 0.1
             text:
@@ -342,7 +342,7 @@ layers:
               anchor: center
               font:
                 family: Noto Sans
-                size: 12px
+                size: 10px
                 fill: 'black'
       link:
         filter:
