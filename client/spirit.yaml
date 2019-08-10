@@ -1,3 +1,5 @@
+---
+
 sources:
   spirit:
     type: MVT
@@ -158,13 +160,6 @@ layers:
         polygons:
           order: 410
           color: '#BBDBB2'
-    golf_course:
-      filter:
-        leisure: golf_course
-      draw:
-        polygons:
-          order: 410
-          color: '#BBDBB2'
     draw:
       polygons:
         order: 300
@@ -201,7 +196,7 @@ layers:
       draw:
         translucent_lines:
           order: 508
-          color: [0.5,0,0.5, 0.5]
+          color: [0.5, 0, 0.5, 0.5]
           width: [[4, 0.5px], [8, 1.5px]]
           dash: [1.5, 3.5]
 
