@@ -11,16 +11,16 @@ sources:
     # Where to get it
     url: https://osmdata.openstreetmap.de/download/simplified-water-polygons-split-3857.zip
     # The location within the archive
-    file: simplified-water-polygons-complete-3857/simplified_water_polygons.shp
+    file: simplified-water-polygons-split-3857/simplified_water_polygons.shp
     archive:
       format: zip
       # Files to extract from the archive
       files:
-        - simplified-water-polygons-complete-3857/simplified_water_polygons.cpg
-        - simplified-water-polygons-complete-3857/simplified_water_polygons.dbf
-        - simplified-water-polygons-complete-3857/simplified_water_polygons.prj
-        - simplified-water-polygons-complete-3857/simplified_water_polygons.shp
-        - simplified-water-polygons-complete-3857/simplified_water_polygons.shx
+        - simplified-water-polygons-split-3857/simplified_water_polygons.cpg
+        - simplified-water-polygons-split-3857/simplified_water_polygons.dbf
+        - simplified-water-polygons-split-3857/simplified_water_polygons.prj
+        - simplified-water-polygons-split-3857/simplified_water_polygons.shp
+        - simplified-water-polygons-split-3857/simplified_water_polygons.shx
   ocean_polygons:
     type: shp
     url: https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip
